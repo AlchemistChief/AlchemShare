@@ -9,7 +9,6 @@ import fs from 'fs';
 // ────────── Custom Modules ──────────
 import { initializeWebSocketServer } from './functions/webSocketHandler.ts';
 import { loginCheck } from './functions/loginCheck.ts';
-import { ADDRCONFIG } from 'dns';
 
 // ────────── Application Setup ──────────
 const app = express();
