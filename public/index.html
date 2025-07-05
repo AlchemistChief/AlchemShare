@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AlchemShare - Login</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/login.css" />
+</head>
+
+<body>
+    <!-- ───────────── Login Screen ───────────── -->
+    <main class="login-container">
+        <form class="login-form" autocomplete="off" spellcheck="false">
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+        </form>
+    </main>
+
+    <!-- ───────────── Post-login UI (hidden initially) ───────────── -->
+    <main class="app-container" style="display: none;">
+        <header class="app-header">
+            <div class="header-title">AlchemShare</div>
+            <div class="header-actions">
+                <button id="uploadFileBtn">Upload File</button>
+                <button id="uploadFolderBtn">Upload Folder</button>
+            </div>
+        </header>
+
+        <section class="main-content">
+            <section class="main-content">
+                <table class="file-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileTableBody">
+                        <!-- Rows will be dynamically inserted here -->
+                        <!-- Example static row for dev -->
+                        <tr>
+                            <td>example.txt</td>
+                            <td>File</td>
+                            <td>1.2 KB</td>
+                            <td>2025-07-05 12:34</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </section>
+    </main>
+    <script type="module" src="./index.js"></script>
+</body>
+
+</html>

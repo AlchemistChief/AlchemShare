@@ -1,0 +1,91 @@
+/* login.css */
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #000;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 280px;
+}
+
+.login-form input {
+    background-color: #080808;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-form input::placeholder {
+    color: #ccc;
+}
+
+.login-form input:focus {
+    border-color: #fff;
+    box-shadow: 0 0 12px 2px #fff;
+    outline: none;
+}
+
+/* Button styling */
+.login-form button {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-form button:hover,
+.login-form button:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+@media (max-width: 400px) {
+    .login-form {
+        gap: 1rem;
+        max-width: 100%;
+    }
+
+    .login-form input {
+        padding: 0.35rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .login-form button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}

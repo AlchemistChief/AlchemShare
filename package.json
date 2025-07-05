@@ -1,0 +1,26 @@
+{
+  "name": "alchemshare",
+  "version": "1.0.0",
+  "description": "AlchemDrop, second version",
+  "license": "MIT",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node-dev --respawn --transpile-only server/index.ts"
+  },
+  "dependencies": {
+    "dnssd": "^0.4.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.3",
+    "@types/dnssd": "^0.4.5",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.29",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.8.3"
+  }
+}
