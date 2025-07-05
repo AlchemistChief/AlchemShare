@@ -1,0 +1,94 @@
+/* ────────── Fully Responsive Context Menu ────────── */
+.card {
+    width: clamp(140px, 25vw, 220px);
+    background: linear-gradient(135deg, #2e3a55 0%, #3d2a47 60%, #251c28 100%);
+    border-radius: 0.75rem;
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+    position: absolute;
+    z-index: 1000;
+    overflow: hidden;
+    font-size: clamp(1rem,1.5vw,1.1rem);
+}
+
+/* List styles */
+.card .list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    gap: 0.25rem;
+}
+
+/* List items */
+.card .list .element {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.05rem 0.6rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* SVG Icons */
+.card .list .element img {
+    width: clamp(0.9rem, 3vw, 1.2rem);
+    height: clamp(0.9rem, 3vw, 1.2rem);
+    transition: all 0.2s ease;
+}
+
+/* Labels */
+.card .list .element .label {
+    font-weight: 600;
+    color: #7e8590;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+/* Base hover effect */
+.card .list .element:hover {
+    background-color: #5353ff;
+    transform: translate(1px, -1px);
+}
+
+.card .list .element:active {
+    transform: scale(0.98);
+}
+
+/* Rename */
+.card .list .element.rename .label,
+.card .list .element.rename img {
+    color: #f7c94b;
+    filter: invert(80%) sepia(84%) saturate(425%) hue-rotate(1deg) brightness(98%) contrast(97%);
+}
+
+.card .list .element.rename:hover {
+    background-color: rgba(247, 201, 75, 0.12);
+}
+
+/* Delete */
+.card .list .element.delete .label,
+.card .list .element.delete img {
+    color: #e36262;
+    filter: invert(40%) sepia(63%) saturate(742%) hue-rotate(325deg) brightness(94%) contrast(90%);
+}
+
+.card .list .element.delete:hover {
+    background-color: rgba(227, 98, 98, 0.12);
+}
+
+/* Download */
+.card .list .element.download .label,
+.card .list .element.download img {
+    color: #4acf8c;
+    filter: invert(66%) sepia(36%) saturate(439%) hue-rotate(96deg) brightness(94%) contrast(91%);
+}
+
+.card .list .element.download:hover {
+    background-color: rgba(74, 207, 140, 0.12);
+}

@@ -22,10 +22,13 @@ async function onLoginSuccess() {
     await loadCss("./css/layout.css");
     await loadCss("./css/table.css");
     await loadCss("./css/components.css");
+    await loadCss("./css/contextMenu.css");
 
     // Dynamically load JS modules
     const { webSocketInitialize } = await import("./functions/webSocketHandler.js");
+    const { initContextMenu } = await import("./functions/contextMenu.js");
     webSocketInitialize();
+    initContextMenu();
 }
 
 function loadCss(href) {

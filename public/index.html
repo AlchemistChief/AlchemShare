@@ -10,6 +10,27 @@
 </head>
 
 <body>
+
+    <!-- ───────────── Context Menu ───────────── -->
+    <div class="card" style=display:none>
+        <ul class="list">
+            <li class="element rename">
+                <img src="./assets/icons/rename.svg" alt="Rename icon" />
+                <p class="label">Rename</p>
+            </li>
+
+            <li class="element download">
+                <img src="./assets/icons/download.svg" alt="Download icon" />
+                <p class="label">Download</p>
+            </li>
+
+            <li class="element delete">
+                <img src="./assets/icons/delete.svg" alt="Delete icon" />
+                <p class="label">Delete</p>
+            </li>
+        </ul>
+    </div>
+
     <!-- ───────────── Login Screen ───────────── -->
     <main class="login-container">
         <form class="login-form" autocomplete="off" spellcheck="false">
@@ -43,13 +64,40 @@
                     <tbody id="fileTableBody">
                         <!-- Rows will be dynamically inserted here -->
                         <!-- Example static row for dev -->
-                        <tr>
-                            <td>example.txt</td>
-                            <td>File</td>
-                            <td>1.2 KB</td>
-                            <td>2025-07-05 12:34</td>
-                        </tr>
-                    </tbody>
+                        <tbody id="fileTableBody">
+                            <!-- Folders first -->
+                            <tr class="ftp-row" data-id="1">
+                                <td>Documents</td>
+                                <td>Folder</td>
+                                <td>—</td>
+                                <td>2025-07-01 10:00</td>
+                            </tr>
+                            <tr class="ftp-row" data-id="2">
+                                <td>Projects</td>
+                                <td>Folder</td>
+                                <td>—</td>
+                                <td>2025-07-03 15:50</td>
+                            </tr>
+
+                            <!-- Files next, sorted alphabetically -->
+                            <tr class="ftp-row" data-id="3">
+                                <td>backup.zip</td>
+                                <td>ZIP Archive</td>
+                                <td>15.5 MB</td>
+                                <td>2025-06-30 18:45</td>
+                            </tr>
+                            <tr class="ftp-row" data-id="4">
+                                <td>example.txt</td>
+                                <td>File</td>
+                                <td>1.2 KB</td>
+                                <td>2025-07-05 12:34</td>
+                            </tr>
+                            <tr class="ftp-row" data-id="5">
+                                <td>image.png</td>
+                                <td>File</td>
+                                <td>3.4 MB</td>
+                                <td>2025-07-04 08:20</td>
+                            </tr>                  </tbody>
                 </table>
             </section>
 
