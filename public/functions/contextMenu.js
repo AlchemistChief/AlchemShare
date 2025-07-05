@@ -57,11 +57,4 @@ export function initContextMenu() {
             if (holdTimer) clearTimeout(holdTimer);
         });
     });
-
-    row.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        console.log("Right-click detected on element with id:", row.dataset.id || "(no id)");
-        showContextMenu(e.pageX, e.pageY, row);
-    });
-
 }
