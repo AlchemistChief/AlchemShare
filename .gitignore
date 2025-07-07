@@ -4,6 +4,7 @@
 temp/
 cookies.txt
 files/
+# .env
 
 # VSCode
 .vscode/
