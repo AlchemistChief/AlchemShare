@@ -15,7 +15,7 @@ const app = express();
 
 const settings = {
     PORT: Number(process.env.PORT) || 3000,
-    ADDRESS: process.env.ADDRESS || 'localhost',
+    DOMAIN: process.env.DOMAIN || 'localhost',
     CREDENTIALS_PATH: path.join(__dirname, 'assets/credentials.json'),
 };
 
@@ -39,12 +39,12 @@ app.post('/api/login', loginCheck);
 // ────────── Server Startup ──────────
 server.listen(settings.PORT, () => {
     new dnssd.Advertisement(dnssd.tcp('https'), settings.PORT, {
-        name: `${settings.ADDRESS}.local`,
-        host: `${settings.ADDRESS}.local`,
+        name: `${settings.DOMAIN}`,
+        host: `${settings.DOMAIN}`,
     }).start();
 
     console.log(`HTTPS Server running on port ${settings.PORT}`);
-    console.log(`Server: https://${settings.ADDRESS}.local:${settings.PORT}`);
+    console.log(`Server: https://${settings.DOMAIN}:${settings.PORT}`);
 });
 
 // ────────── WebSocket Handler ──────────
