@@ -21,6 +21,7 @@ set CONFIG_FILE=%~dp0config.json
 call :CheckNode
 call :AfterNodeCheck
 call :InstallTsNodeDev
+call :CreateEnvFile
 call :PromptStartServer
 exit /b
 
@@ -154,6 +155,22 @@ if errorlevel 1 (
 set "YOUTUBE_DL_SKIP_PYTHON_CHECK="
 set "YOUTUBE_DL_SKIP_DOWNLOAD="
 echo %GREENCOLOR%[SUCCESS]%RESET% All dependencies installed successfully.
+exit /b
+
+:: ────────── Create .env file with default environment variables ──────────
+:CreateEnvFile
+set "ENV_PATH=%~dp0server\.env"
+if exist "%ENV_PATH%" (
+    echo %BLUECOLOR%[INFO]%RESET% .env already exists at server/.env. Skipping creation.
+    exit /b
+)
+echo %BLUECOLOR%[INFO]%RESET% Creating .env file with default configuration...
+echo %BLUECOLOR%[INFO]%RESET% Please set the "DOMAIN" variable to e.g: "HostName.local"
+(
+    echo PORT=443
+    echo DOMAIN=
+) > "%ENV_PATH%"
+echo %GREENCOLOR%[SUCCESS]%RESET% .env file created at server/.env
 exit /b
 
 :: ────────── Prompt user to start the server ──────────
