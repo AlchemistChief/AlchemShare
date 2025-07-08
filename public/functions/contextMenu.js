@@ -1,3 +1,5 @@
+// functions/contextMenu.js
+
 // ────────── Context Menu Handler ──────────
 
 let holdTimer = null;
