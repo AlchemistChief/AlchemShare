@@ -1,6 +1,7 @@
 // index.js
+
 // ────────── Custom Modules ──────────
-import { initLogin } from "./functions/login.js";
+import { initLogin } from "./functions/loginHandler.js";
 
 // ────────── Index Main ──────────
 document.addEventListener("DOMContentLoaded", () => {
