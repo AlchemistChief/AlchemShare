@@ -26,7 +26,8 @@ export function logMessage(type = "INFO", message, fromWebSocket = false) {
         INFO:   "[INFO]   ",
         DEBUG:  "[DEBUG]  ",
         ERROR:  "[ERROR]  ",
-        SUCCESS:"[SUCCESS]"
+        SUCCESS:"[SUCCESS]",
+        WARNING:"[WARNING]",
     };
 
     const prefix = prefixMap[upperType] || "[LOG]";
