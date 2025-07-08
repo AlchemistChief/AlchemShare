@@ -1,7 +1,7 @@
 // functions/loginHandler.js
 
 // ────────── Custom Modules ──────────
-import { saveCredentials } from "./utils.js";
+import { logClientMessage, saveCredentials } from "./utils.js";
 
 // ────────── Login Module ──────────
 export function initLogin(onSuccessCallback) {

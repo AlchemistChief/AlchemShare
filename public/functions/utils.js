@@ -1,15 +1,15 @@
-// functions/utils.js
+  // functions/utils.js
 
-// ────────── Credentials Module (Frontend) ──────────
+  // ────────── Credentials Module (Frontend) ──────────
 let savedCredentials = {
-    username: null,
-    password: null,
+    username : null,
+    password : null,
     authToken: null,
 };
 
 export function saveCredentials({ username, password, authToken }) {
-    savedCredentials.username = username;
-    savedCredentials.password = password;
+    savedCredentials.username  = username;
+    savedCredentials.password  = password;
     savedCredentials.authToken = authToken;
 }
 
@@ -17,31 +17,34 @@ export function getCredentials() {
     return { ...savedCredentials };
 }
 
-// ────────── Logger Function ──────────
-export function logMessage(type = "INFO", message, fromWebSocket = false) {
+  // ────────── Logger Function ──────────
+export function logClientMessage(type = "INFO", message, fromWebSocket = false) {
     const upperType = type.toUpperCase();
 
-    // Prefixes and Colors by Log Type
+      // Prefixes and Colors by Log Type
     const prefixMap = {
-        INFO:   "[INFO]   ",
-        DEBUG:  "[DEBUG]  ",
-        ERROR:  "[ERROR]  ",
-        SUCCESS:"[SUCCESS]",
-        WARNING:"[WARNING]",
+        INFO   : "[INFO]   ",
+        DEBUG  : "[DEBUG]  ",
+        ERROR  : "[ERROR]  ",
+        SUCCESS: "[SUCCESS]",
+        WARNING: "[WARNING]",
     };
 
     const prefix = prefixMap[upperType] || "[LOG]";
 
-    // Format WebSocket tag if needed
+      // Format WebSocket tag if needed
     const wsTag = fromWebSocket ? "[WS] " : "";
 
-    // Final formatted message
+      // Final formatted message
     console.log(`${prefix} ${wsTag}${message}`);
 
-    // Trigger alert on ERROR in browser
-    if (upperType === "ERROR") {
-        if (typeof window !== 'undefined' && typeof alert === 'function') {
+      // Trigger alert on ERROR in browser
+    if (typeof window !== 'undefined' && typeof alert === 'function') {
+        if (upperType === "ERROR") {
             alert(`ERROR: ${message}`);
         }
+        else if (upperType === "WARNING") {
+            alert(`WARNING: ${message}`);
+        }
     }
-}
+};
