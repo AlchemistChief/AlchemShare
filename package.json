@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AlchemDrop, second version",
   "license": "MIT",
-  "author": "",
+  "author": "AlchemistChief",
   "main": "index.js",
   "scripts": {
     "start": "tsx watch server/index.ts"
