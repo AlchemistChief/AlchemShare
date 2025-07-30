@@ -1,5 +1,5 @@
 // ────────── Module Importing ──────────
-import { Server as WsServer, WebSocket } from 'ws';
+import { WebSocketServer , WebSocket } from 'ws';
 
 // ────────── Custom Modules ──────────
 // ────────── WebSocket Handler Module ──────────
@@ -12,7 +12,7 @@ interface WSMessage {
 }
 
 // WebSocket server instance
-let wss: WsServer | null = null;
+let wss: WebSocketServer | null = null;
 
 // Store authenticated clients here
 const authenticatedClients = new Map<WebSocket, { username: string; authToken: string; ip: string }>();
@@ -23,7 +23,7 @@ function validateAuth(username: string, password: string, authToken: string): bo
 }
 
 export function initializeWebSocketServer(server: any) {
-    wss = new WsServer({ server });
+    wss = new WebSocketServer({ server });
 
     wss.on('connection', (ws: WebSocket, req) => {
         // Clean IP: remove IPv6 prefix ::ffff: if present
