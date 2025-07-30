@@ -37,10 +37,11 @@ app.get('/selfsigned.crt', (req, res) => {
 app.post('/api/login', loginCheck);
 
 // ────────── Server Startup ──────────
-server.listen(settings.PORT, () => {
+server.listen(settings.PORT, '0.0.0.0', () => {
     new dnssd.Advertisement(dnssd.tcp('https'), settings.PORT, {
         name: `${settings.DOMAIN}`,
         host: `${settings.DOMAIN}`,
+        type: "_http._tcp",
     }).start();
 
     console.log(`HTTPS Server running on port ${settings.PORT}`);
