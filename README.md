@@ -1,6 +1,6 @@
 <!-- Project Logo -->
 <p align="center">
-  <img src="https://iili.io/FUfTsGS.gif" alt="AlchemShare Logo" style="max-width: 90vw; height: 20vw;">
+  <img src="https://iili.io/FUfTsGS.gif" alt="AlchemShare Logo" style="max-width: 90vw; height: 15vw;">
 </p>
 
 <!-- Project Title -->
