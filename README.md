@@ -18,7 +18,7 @@
   <a href="https://github.com/AlchemistChief/AlchemShare/blob/main/LICENSE.md">
     <img src="https://img.shields.io/github/license/AlchemistChief/AlchemShare?color=green&style=flat&label=📄%20License" alt="License Badge" />
   </a>
-  <a href="https://github.com/AlchemistChief/AlchemShare/commits/master">
+  <a href="https://github.com/AlchemistChief/AlchemShare/commits/main">
     <img src="https://img.shields.io/github/last-commit/AlchemistChief/AlchemShare?color=blue&style=flat&label=🕒%20Last%20Commit" alt="Last Commit Badge" />
   </a>
   <a href="https://github.com/AlchemistChief/AlchemShare/issues">
