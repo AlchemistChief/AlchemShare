@@ -17,8 +17,8 @@ interface CredentialsFile {
     users: UserCredentials[];
 }
 
-// Use __dirname for resolving credentials path
-const CREDENTIALS_PATH = path.join(__dirname, '../assets/credentials.json');
+// Use import.meta.dirname for resolving credentials path
+const CREDENTIALS_PATH = path.join(import.meta.dirname, '../assets/credentials.json');
 
 /**
  * Express handler for login API

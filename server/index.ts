@@ -1,5 +1,5 @@
 // ────────── Module Importing ──────────
-import dotenv from 'dotenv'; dotenv.config({ path: __dirname + '/.env' });
+import dotenv from 'dotenv'; dotenv.config({ path: import.meta.dirname + '/.env' });
 import express from 'express';
 import https from 'https';
 import dnssd from 'dnssd';
@@ -16,22 +16,22 @@ const app = express();
 const settings = {
     PORT: Number(process.env.PORT) || 3000,
     DOMAIN: process.env.DOMAIN || 'localhost',
-    CREDENTIALS_PATH: path.join(__dirname, 'assets/credentials.json'),
+    CREDENTIALS_PATH: path.join(import.meta.dirname, 'assets/credentials.json'),
 };
 
 // ────────── HTTPS Server Setup ──────────
 const server = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, 'assets/selfsigned.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'assets/selfsigned.crt')),
+    key: fs.readFileSync(path.join(import.meta.dirname, 'assets/selfsigned.key')),
+    cert: fs.readFileSync(path.join(import.meta.dirname, 'assets/selfsigned.crt')),
 }, app);
 
 // ────────── Middleware Configuration ──────────
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(import.meta.dirname, '../public')));
 
 // ────────── Routes ──────────
 app.get('/selfsigned.crt', (req, res) => {
-    res.sendFile(path.join(__dirname, 'assets/selfsigned.crt'));
+    res.sendFile(path.join(import.meta.dirname, 'assets/selfsigned.crt'));
 });
 
 app.post('/api/login', loginCheck);
