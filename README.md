@@ -1,56 +1,95 @@
 
-![Logo](https://iili.io/FUfTsGS.gif)
 
-[![License](https://img.shields.io/github/license/AlchemistChief/AlchemShare?color=green&style=flat&label=📄%20License)](https://github.com/AlchemistChief/AlchemShare/blob/main/LICENSE.md)
-[![Last Commit](https://img.shields.io/github/last-commit/AlchemistChief/AlchemShare?color=blue&style=flat&label=🕒%20Last%20Commit)](https://github.com/AlchemistChief/AlchemShare/commits/master)
-[![Issues](https://img.shields.io/github/issues/AlchemistChief/AlchemShare?color=orange&logo=github&logoColor=white&style=flat)](https://github.com/AlchemistChief/AlchemShare/issues)
 
-AlchemShare is a file sharing service for the local network, with support for different accounts. featuring file previews, uploading, renaming, deleting. Built with TypeScript. It runs on Windows and utilizes Node.js. The project includes certificate for secure connections.
 
----
+<!-- Project Logo -->
+<p align="center">
+  <img src="https://iili.io/FUfTsGS.gif" alt="AlchemShare Logo">
+</p>
 
-- ## ⚙ Requirements
+<!-- Project Title -->
+<h1 align="center"><b>AlchemShare</b></h1>
+<p align="center">
+  A self-hosted file sharing service for Windows
+</p>
 
-  - **Operating System:** Windows
-  - **Permissions:** Elevated
-  - **Node.js:** v22.12.0+ (Use **[INSTALL.bat](INSTALL.bat)**)
+<!-- Shields -->
+<p align="center">
+  <a href="https://github.com/AlchemistChief/AlchemShare/blob/main/LICENSE.md">
+    <img src="https://img.shields.io/github/license/AlchemistChief/AlchemShare?color=green&style=flat&label=📄%20License" alt="License Badge" />
+  </a>
+  <a href="https://github.com/AlchemistChief/AlchemShare/commits/master">
+    <img src="https://img.shields.io/github/last-commit/AlchemistChief/AlchemShare?color=blue&style=flat&label=🕒%20Last%20Commit" alt="Last Commit Badge" />
+  </a>
+  <a href="https://github.com/AlchemistChief/AlchemShare/issues">
+    <img src="https://img.shields.io/github/issues/AlchemistChief/AlchemShare?color=orange&logo=github&logoColor=white&style=flat" alt="GitHub Issues Badge" />
+  </a>
+</p>
 
----
+<hr>
 
-- ## 📦 Installation
+<!-- Project Description -->
+<p align="center">
+  <b>AlchemShare</b> is a file sharing service for the local network, with support for different accounts.
+  </br>Featuring file previews, uploading, renaming, deleting. Built with TypeScript.
+  </br>It runs on Windows and utilizes Node.js. The project includes certificate for secure connections.
+</p>
 
-### Via. File:
-**[INSTALL.bat](INSTALL.bat)** *(Can Install Node & Dependencies)*
+<hr>
 
-### Via. Command:
-```bash
-npm install --include=dev
-```
+<!-- Requirements -->
+<h2>⚙ Requirements</h2>
+<ul>
+  <li><b>Operating System:</b> Windows</li>
+  <li><b>Permissions:</b> Admin (Elevated)</li>
+  <li><b>Node.js:</b> v22.12.0+ (Use <a href="INSTALL.bat"><code>INSTALL.bat</code></a>)</li>
+</ul>
 
----
+<!-- Installation -->
+<h2>📦 Installation</h2>
+<h3>Via File:</h3>
+<div style="margin-left: 2em;">
+  <a href="INSTALL.bat"><code>INSTALL.bat</code></a>
+  </br>– Installs Node & Dependencies
+</div>
 
-- ## 🚀 Run the App
+<h3>Via Command:</h3>
+<div style="margin-left: 1em;">
+  <pre><code><b>npm install --include=dev</b></code></pre>
+</div>
 
-### Via. File:
-**[START.bat](START.bat)**
+<!-- Run the App -->
+<h2>🚀 Run the App</h2>
+<h3>Via File:</h3>
+<div style="margin-left: 2em;">
+  <a href="START.bat"><code>START.bat</code></a>
+</div>
 
-### Via. Command:
-```bash
-npm start
-```
+<h3>Via Command:</h3>
+<div style="margin-left: 1em;">
+  <pre><code><b>npm start</b></code></pre>
+</div>
 
----
+<!-- Certificate -->
 
-- ## 🔐 Certificate & Key Generation
+<h2>🔐 Certificate & Key Generation</h2>
 
-This project uses a default selfsigned certificate & key, please generate your own certficate & key, for safety. To generate OpenSSL certificates for HTTPS support, you can use the following tool:
+<p>
+  This project uses a default self-signed certificate. For production, please generate your own.<br>
+  Use the following tool to generate OpenSSL certs for HTTPS support:
+</p>
 
-### 🔗 [CrypTool OpenSSL Generator](https://www.cryptool.org/de/cto/openssl/)
+<p>
+   <a href="https://www.cryptool.org/de/cto/openssl/" target="_blank"><b>🔗 CrypTool OpenSSL Generator</b></a>
+</p>
 
-Use this to generate your `selfsigned.key` and `selfsigned.crt` files, and place them where your server expects them. Place them in [server/assets](server/assets).
+<p>Generate and place these in <a href="server/assets"><code>server/assets</code></a>:</p>
+<ul>
+  <li><code>selfsigned.key</code></li>
+  <li><code>selfsigned.crt</code></li>
+</ul>
 
----
+<!-- License -->
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE.md).
+<h2>📄 License</h2>
+<p>This project is licensed under the <a href="LICENSE.md">MIT License</a>.</p>
