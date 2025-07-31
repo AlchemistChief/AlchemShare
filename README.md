@@ -1,10 +1,6 @@
-
-
-
-
 <!-- Project Logo -->
 <p align="center">
-  <img src="https://iili.io/FUfTsGS.gif" alt="AlchemShare Logo">
+  <img src="https://iili.io/FUfTsGS.gif" alt="AlchemShare Logo" style="max-width: 90vw; height: 20vw;">
 </p>
 
 <!-- Project Title -->
@@ -14,17 +10,17 @@
 </p>
 
 <!-- Shields -->
-<p align="center">
+<div align="center">
   <a href="https://github.com/AlchemistChief/AlchemShare/blob/main/LICENSE.md">
-    <img src="https://img.shields.io/github/license/AlchemistChief/AlchemShare?color=green&style=flat&label=📄%20License" alt="License Badge" />
+    <img src="https://img.shields.io/github/license/AlchemistChief/AlchemShare?color=green&style=flat&label=License" alt="License Badge" />
   </a>
   <a href="https://github.com/AlchemistChief/AlchemShare/commits/main">
-    <img src="https://img.shields.io/github/last-commit/AlchemistChief/AlchemShare?color=blue&style=flat&label=🕒%20Last%20Commit" alt="Last Commit Badge" />
+    <img src="https://img.shields.io/github/last-commit/AlchemistChief/AlchemShare?color=blue&style=flat&label=Last%20Commit" alt="Last Commit Badge" />
   </a>
   <a href="https://github.com/AlchemistChief/AlchemShare/issues">
     <img src="https://img.shields.io/github/issues/AlchemistChief/AlchemShare?color=orange&logo=github&logoColor=white&style=flat" alt="GitHub Issues Badge" />
   </a>
-</p>
+</div>
 
 <hr>
 
