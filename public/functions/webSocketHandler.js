@@ -8,7 +8,7 @@ let ws = null;
 
 export function webSocketInitialize() {
     if (ws && ws.readyState === WebSocket.OPEN) {
-        logClientMessage("WARNING", "WebSocket already connected", true);
+        logClientMessage("WARNING", "[WS] WebSocket already connected");
         return;
     }
 
@@ -19,41 +19,43 @@ export function webSocketInitialize() {
     ws = new WebSocket(url);
 
     ws.onopen = () => {
-        logClientMessage("SUCCESS", "WebSocket connected", true);
-        sendMessage({ type: "auth" });
+        logClientMessage("SUCCESS", "[WS] WebSocket connected");
+        const { username } = getCredentials();
+        sendMessage({
+            type: "auth",
+            username,
+        });
     };
 
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        logClientMessage("DEBUG", `WS message received: ${JSON.stringify(data)}`, true);
+        logClientMessage("DEBUG", `[WS] Message received: ${JSON.stringify(data)}`);
     };
 
     ws.onerror = (err) => {
-        logClientMessage("ERROR", `WebSocket error: ${err.message}`, true);
+        logClientMessage("ERROR", `[WS] WebSocket error: ${err.message}`);
     };
 
     ws.onclose = (event) => {
-        logClientMessage("DEBUG", `WebSocket closed (code: ${event.code})`, true);
+        logClientMessage("DEBUG", `[WS] WebSocket closed (code: ${event.code})`);
     };
 }
 
 export function sendMessage(message) {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
-        logClientMessage("ERROR", "WebSocket is not open. Cannot send message.", true);
+        logClientMessage("ERROR", "[WS] WebSocket is not open. Cannot send message.");
         return;
     }
 
-    const { username, password, authToken } = getCredentials();
+    const { authToken } = getCredentials();
 
     const payload = {
         authToken,
-        username,
-        password,
         message,
     };
 
     ws.send(JSON.stringify(payload));
-    logClientMessage("DEBUG", `Message sent: ${JSON.stringify(payload)}`, true);
+    logClientMessage("DEBUG", `[WS] Message sent: ${JSON.stringify(payload)}`);
 }
 
 export function closeWebSocket() {
