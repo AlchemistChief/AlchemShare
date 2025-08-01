@@ -18,7 +18,7 @@ export function getCredentials() {
 }
 
   // ────────── Logger Function ──────────
-export function logClientMessage(type = "INFO", message, fromWebSocket = false) {
+export function logClientMessage(type = "INFO", message) {
     const upperType = type.toUpperCase();
 
       // Prefixes and Colors by Log Type
@@ -32,11 +32,8 @@ export function logClientMessage(type = "INFO", message, fromWebSocket = false) 
 
     const prefix = prefixMap[upperType] || "[LOG]";
 
-      // Format WebSocket tag if needed
-    const wsTag = fromWebSocket ? "[WS] " : "";
-
       // Final formatted message
-    console.log(`${prefix} ${wsTag}${message}`);
+    console.log(`${prefix} ${message}`);
 
       // Trigger alert on ERROR in browser
     if (typeof window !== 'undefined' && typeof alert === 'function') {
