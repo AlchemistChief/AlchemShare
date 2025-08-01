@@ -57,5 +57,15 @@ export function loginCheck(req: Request, res: Response) {
 }
 
 export function generateAuthToken(): string {
-    return `token-${Date.now()}-${Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000}`;
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    const timestampPart = Date.now().toString(36);
+
+    let token = timestampPart;
+
+    while (token.length < 20) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return token;
 }
