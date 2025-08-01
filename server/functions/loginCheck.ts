@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 
 // ────────── Custom Modules ──────────
-import { generateAuthToken } from './utils.ts';
 
 // ────────── Login Check Module ──────────
 
@@ -55,4 +54,8 @@ export function loginCheck(req: Request, res: Response) {
 
     // Send success + token to client
     res.status(200).json({ success: true, authToken });
+}
+
+export function generateAuthToken(): string {
+    return `token-${Date.now()}-${Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000}`;
 }
