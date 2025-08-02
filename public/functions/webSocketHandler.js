@@ -57,7 +57,3 @@ export function sendMessage(message) {
     ws.send(JSON.stringify(payload));
     logClientMessage("DEBUG", `[WS] Message sent: ${JSON.stringify(payload)}`);
 }
-
-export function closeWebSocket() {
-    if (ws) ws.close();
-}
