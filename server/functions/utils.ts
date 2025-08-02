@@ -2,7 +2,7 @@
 // ────────── Custom Modules ──────────
 // ────────── Utils Module (Backend) ──────────
 
-// OUTPUT Coloring
+// ────────── Colsole Coloring ──────────
 type Color = 'red' | 'green' | 'blue' | 'orange' | 'gold' | 'white';
 type Weight = 'normal' | 'bold';
 
