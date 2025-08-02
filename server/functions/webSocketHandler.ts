@@ -1,119 +1,201 @@
 // ────────── Module Importing ──────────
-import { WebSocketServer , WebSocket } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 
 // ────────── Custom Modules ──────────
+import { handleClientMessage } from './webSocketHelper.ts'
+import { colorizeANSI } from './utils.ts';
+
 // ────────── WebSocket Handler Module ──────────
 
 interface WSMessage {
-    authToken?: string;
-    username?: string;
-    password?: string;
+    authToken: string;
     message: any;
 }
 
-// WebSocket server instance
+// Internal authenticated client record
+interface ClientSession {
+    username: string;
+    authToken: string;
+    clientIp: string;
+    authenticated: boolean;
+}
+
 let wss: WebSocketServer | null = null;
 
-// Store authenticated clients here
-const authenticatedClients = new Map<WebSocket, { username: string; authToken: string; ip: string }>();
-
-function validateAuth(username: string, password: string, authToken: string): boolean {
-    // Simple check for presence — replace with real validation
-    return !!username && !!password && !!authToken;
-}
+// Store authenticated clients keyed by their WebSocket instance
+const authenticatedClients = new Map<WebSocket, ClientSession>();
 
 export function initializeWebSocketServer(server: any) {
     wss = new WebSocketServer({ server });
 
     wss.on('connection', (ws: WebSocket, req) => {
-        // Clean IP: remove IPv6 prefix ::ffff: if present
-        let ip = req.socket.remoteAddress || 'unknown-ip';
-        if (ip.startsWith('::ffff:')) {
-            ip = ip.substring(7);
+        // Extract and normalize client IP address
+        let clientIp = req.socket.remoteAddress || 'unknown-ip';
+        if (clientIp.startsWith('::ffff:')) {
+            clientIp = clientIp.substring(7);
         }
 
-        console.log('[WS] Client Connected');
+        // Add unauthenticated client session immediately for tracking
+        authenticatedClients.set(ws, {
+            username: '',
+            authToken: '',
+            clientIp,
+            authenticated: false
+        });
 
-        ws.on('message', (data) => {
+        // Authenticate client on first message only
+        ws.once('message', (data) => {
             try {
                 const parsed: WSMessage = JSON.parse(data.toString());
+                const { authToken, message } = parsed;
 
-                const { username, password, authToken, message } = parsed;
+                // Basic message format and auth data validation
+                if (!message || message.type !== 'auth' || !message.username) {
+                    ws.send(JSON.stringify({ error: 'Invalid authentication format' }));
+                    ws.close();
+                    return;
+                }
 
-                // Validate credentials on every message
-                if (!validateAuth(username, password, authToken)) {
+                const { username } = message;
+
+                // Ensure authToken and username exist
+                if (!username || !authToken) {
                     ws.send(JSON.stringify({ error: 'Authentication failed' }));
                     ws.close();
                     return;
                 }
 
-                // Mark client authenticated
-                if (!authenticatedClients.has(ws)) {
-                    authenticatedClients.set(ws, { username, authToken, ip });
-                    console.log(`       | [${authToken}] [${ip}] [${username}]`);
-                    logConnectedClients();
+                // Prevent duplicate connections using same username or token
+                const existingSession = [...authenticatedClients.values()].find(s =>
+                    s.authenticated && (s.authToken === authToken || s.username === username)
+                );
+                if (existingSession) {
+                    ws.send(JSON.stringify({ error: 'Duplicate session' }));
+                    ws.close();
+                    return;
                 }
 
-                // Handle client message
-                handleClientMessage(ws, message);
+                // Mark client as authenticated
+                authenticatedClients.set(ws, {
+                    username,
+                    authToken,
+                    clientIp,
+                    authenticated: true
+                });
+
+                // Log successful authentication with colorized output
+                logWS('Client Connected [Authenticated]');
+                console.log(
+                    `       |> Auth:[${fixedWidth(authToken)}] [${colorizeANSI('√', { color: 'green', weight: 'bold' })}]\n` +
+                    `       |> IP:  [${fixedWidth(clientIp)}]\n` +
+                    `       |> User:[${fixedWidth(username)}]`
+                );
+                logConnectedClients()
+
+                // Start listening for all subsequent messages
+                setupMessageListener(ws);
+
             } catch (err) {
-                console.error('[WS] WS message parse error:', err);
                 ws.send(JSON.stringify({ error: 'Invalid message format' }));
+                ws.close();
             }
         });
 
         ws.on('close', () => {
             const clientData = authenticatedClients.get(ws);
-            if (clientData) {
-                console.log(`[WS] Client Disconnected`);
-                console.log(`       | [${clientData.authToken}] [${clientData.ip}] [${clientData.username}]`);
+            if (clientData?.authenticated) {
+                logWS('Client Disconnected');
+                console.log(`       |> [${clientData.authToken}] [${clientData.clientIp}] [${clientData.username}]`);
             } else {
-                console.log('[WS] Client Disconnected | [unknown client]');
+                logWS('Client Disconnected | [unauthenticated]');
             }
-
+            // Remove client session on disconnect
             authenticatedClients.delete(ws);
             logConnectedClients();
         });
+    });
+};
+
+// ────────── Permanent Message Listener ──────────
+function setupMessageListener(ws: WebSocket) {
+    ws.on('message', (data) => {
+        try {
+            const parsed: WSMessage = JSON.parse(data.toString());
+            const { authToken, message } = parsed;
+
+            const clientInfo = authenticatedClients.get(ws);
+
+            // Ensure client is authenticated before processing
+            if (!clientInfo || !clientInfo.authenticated) {
+                ws.send(JSON.stringify({ error: 'Not authenticated' }));
+                ws.close();
+                return;
+            }
+
+            // Prevent spoofing by validating authToken on every message
+            if (authToken !== clientInfo.authToken) {
+                ws.send(JSON.stringify({ error: 'Authentication token mismatch' }));
+                logError(`Auth token spoof attempt from ${clientInfo.clientIp}`);
+                ws.close();
+                return;
+            }
+
+            // Delegate actual message handling to project-specific handler
+            handleClientMessage(ws, message, clientInfo, (errMsg) => {
+                ws.send(JSON.stringify({ error: errMsg }));
+                logError(`${clientInfo.username}@${clientInfo.clientIp}: ${errMsg}`);
+            });
+
+        } catch (err) {
+            ws.send(JSON.stringify({ error: 'Invalid message format' }));
+        }
     });
 }
 
 // ────────── Log Connected Clients ──────────
 function logConnectedClients() {
-    console.log(`[WS] Total Connected Clients: (${authenticatedClients.size})`);
-
-    let maxLineLength = 0;
+    logWS(`Total Connected Clients: (${authenticatedClients.size})`);
 
     for (const clientData of authenticatedClients.values()) {
-        const line = `       | [${clientData.authToken}] [${clientData.ip}] [${clientData.username}]`;
+        const username = clientData.username || 'unknown';
+        const authToken = clientData.authToken || 'no-token';
+        const clientIp = clientData.clientIp || 'no-ip';
+
+        const authenticated = clientData.authenticated == true
+            ? colorizeANSI('√', { color: 'green', weight: 'bold' })
+            : colorizeANSI('X', { color: 'red', weight: 'bold' });
+
+        const line =
+            `       |> Auth:[${fixedWidth(authToken)}] [${authenticated}]\n` +
+            `       |> IP:  [${fixedWidth(clientIp)}]\n` +
+            `       |> User:[${fixedWidth(username)}]`;
+
         console.log(line);
-        if (line.length > maxLineLength) maxLineLength = line.length;
     }
 
-    if (maxLineLength > 0) {
-        console.log('▔'.repeat(maxLineLength));
+    console.log('▀'.repeat(45));
+}
+
+// ────────── Helper Functions ──────────
+// Pad or truncate string for consistent width
+function fixedWidth(str: string | undefined, fixedLength = 20): string {
+    const val = (str ?? '').toString();
+    if (val.length > fixedLength) {
+        return val.substring(0, fixedLength);
+    } else {
+        return val.padEnd(fixedLength, ' ');
     }
 }
 
-function handleClientMessage(ws: WebSocket, message: any) {
-    if (!message || typeof message !== 'object') return;
+// Log WebSocket server events with [WS] tag
+function logWS(message: string) {
+    const wsTag = colorizeANSI('[WS]', { color: 'orange', weight: 'bold' });
+    console.log(`${wsTag} ${message}`);
+}
 
-    switch (message.type) {
-        case 'auth':
-            ws.send(JSON.stringify({ type: 'auth', success: true }));
-            break;
-
-        case 'listFiles':
-            // TODO: Implement directory reading and send file list
-            ws.send(
-                JSON.stringify({
-                    type: 'listFiles',
-                    files: [], // placeholder empty list
-                })
-            );
-            break;
-
-        default:
-            ws.send(JSON.stringify({ error: 'Unknown message type' }));
-            break;
-    }
+// Log errors with bold red ERROR prefix
+function logError(message: string) {
+    const wsTag = colorizeANSI('[WS]', { color: 'orange', weight: 'bold' });
+    const errorTag = colorizeANSI('ERROR:', { color: 'red', weight: 'bold' });
+    console.error(`${wsTag} ${errorTag} ${message}`);
 }
