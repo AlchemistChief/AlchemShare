@@ -24,6 +24,7 @@ export async function handleClientMessage(
 
     switch (message.type) {
         case 'auth':
+            //TODO: Implement authentication
             ws.send(JSON.stringify({ type: 'auth', success: true }));
             break;
 
