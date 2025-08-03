@@ -9,13 +9,6 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="./css/layout.css" />
 
-    <script>
-        // ───────────── Back Link Handler ─────────────
-        document.getElementById('backBtn').addEventListener('click', () => {
-            window.history.back();
-        });
-    </script>
-
     <style>
         .back-link {
             margin-top: 1.5rem;
@@ -41,7 +34,7 @@
 <body>
 
     <!-- ───────────── License Content ───────────── -->
-    <main class="login-container" style="max-width: 700px; padding: 20px;">
+    <main class="login-container" style="max-width: 95%; padding: 1rem;">
         <a href="javascript:void(0)" class="back-link" id="backBtn">← Back</a>
 
         <h1>MIT License</h1>
@@ -68,6 +61,13 @@
             SOFTWARE.</p>
     </main>
 
+    <script>
+        // ───────────── Back Link Handler ─────────────
+        document.getElementById('backBtn').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+    
 </body>
 
 </html>
