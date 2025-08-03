@@ -30,10 +30,6 @@ app.use(express.json());
 app.use(express.static(path.join(import.meta.dirname, '../public')));
 
 // ────────── Routes ──────────
-app.get('/selfsigned.crt', (req, res) => {
-    res.sendFile(path.join(import.meta.dirname, 'assets/selfsigned.crt'));
-});
-
 app.post('/api/login', loginCheck);
 
 // ────────── Error-handling middleware ──────────
