@@ -1,5 +1,5 @@
 // ────────── Module Importing ──────────
-import { WebSocket } from 'ws';
+import type { WebSocket } from 'ws';
 
 // ────────── Custom Modules ──────────
 // ────────── WebSocket Helper Module ──────────

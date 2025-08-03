@@ -1,5 +1,7 @@
 // ────────── Module Importing ──────────
-import { WebSocketServer, WebSocket } from 'ws';
+import { WebSocketServer } from 'ws';
+import type { WebSocket } from 'ws';
+import type { Server } from 'https';
 
 // ────────── Custom Modules ──────────
 import { handleClientMessage } from './webSocketHelper.ts'
@@ -25,7 +27,7 @@ let wss: WebSocketServer | null = null;
 // Store authenticated clients keyed by their WebSocket instance
 const authenticatedClients = new Map<WebSocket, ClientSession>();
 
-export function initializeWebSocketServer(server: any) {
+export function initializeWebSocketServer(server: Server) {
     wss = new WebSocketServer({ server });
 
     wss.on('connection', (ws: WebSocket, req) => {
