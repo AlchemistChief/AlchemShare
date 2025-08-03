@@ -1,15 +1,5 @@
 /* login.css */
 
-body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #000;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-}
-
 .login-container {
     height: 100vh;
     display: flex;
