@@ -9,6 +9,13 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="./css/layout.css" />
 
+    <script>
+        // ───────────── Back Link Handler ─────────────
+        document.getElementById('backBtn').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+
     <style>
         .back-link {
             margin-top: 1.5rem;
@@ -60,13 +67,6 @@
             OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
             SOFTWARE.</p>
     </main>
-
-    <script>
-        // ───────────── Back Link Handler ─────────────
-        document.getElementById('backBtn').addEventListener('click', () => {
-            window.history.back();
-        });
-    </script>
 
 </body>
 
