@@ -3,11 +3,21 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>404 - Page Not Found</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>403 - Access Denied</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="manifest" href="manifest.json" />
     <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+
         .project-header {
             position: fixed;
             top: 15px;
@@ -97,9 +107,9 @@
     </div>
 
     <div class="error-container">
-        <div class="error-code">500</div>
-        <div class="error-message">Internal Server Error. Something went wrong on our end.</div>
-        <a class="back-link" href="/">← Try Again</a>
+        <div class="error-code">403</div>
+        <div class="error-message">Access Denied. You don't have permission to view this page.</div>
+        <a class="back-link" href="/">← Return Home</a>
     </div>
 
     <footer class="page-footer">
