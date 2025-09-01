@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 // ────────── Custom Modules ──────────
+import { generateUniqueToken } from './utils.ts';
 
 // ────────── Login Check Module ──────────
 
@@ -48,24 +49,10 @@ export function loginCheck(req: Request, res: Response) {
     }
 
     // Generate auth token on success
-    const authToken = generateAuthToken();
+    const authToken = generateUniqueToken();
 
     // TODO: Optionally, store authToken with user session or DB here
 
     // Send success + token to client
     res.status(200).json({ success: true, authToken });
-}
-
-export function generateAuthToken(): string {
-    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    const timestampPart = Date.now().toString(36);
-
-    let token = timestampPart;
-
-    while (token.length < 20) {
-        token += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-
-    return token;
 }

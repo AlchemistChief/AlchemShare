@@ -34,3 +34,17 @@ export function colorizeANSI(
 
     return `\x1b[${weightCode};38;5;${colorCode}m${text}\x1b[0m`;
 };
+
+export function generateUniqueToken(): string {
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    const timestampPart = Date.now().toString(36);
+
+    let token = timestampPart;
+
+    while (token.length < 20) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return token;
+}
