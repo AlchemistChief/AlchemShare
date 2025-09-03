@@ -1,47 +1,52 @@
-  // functions/utils.js
+// functions/utils.js
 
-  // ────────── Credentials Module (Frontend) ──────────
+// ────────── Credentials Module (Frontend) ──────────
 let savedCredentials = {
-    username : null,
-    password : null,
-    authToken: null,
+  authToken: null,
+  username: null,
+  password: null,
+  userID: null,
+  permissions: [],
 };
 
-export function saveCredentials({ username, password, authToken }) {
-    savedCredentials.username  = username;
-    savedCredentials.password  = password;
-    savedCredentials.authToken = authToken;
+export function saveCredentials({authToken, username, password, userID, permissions }) {
+  savedCredentials.authToken = authToken;
+  savedCredentials.username = username;
+  savedCredentials.password = password;
+  savedCredentials.userID = userID;
+  savedCredentials.permissions = permissions || [];
 }
+
 
 export function getCredentials() {
-    return { ...savedCredentials };
+  return { ...savedCredentials };
 }
 
-  // ────────── Logger Function ──────────
+// ────────── Logger Function ──────────
 export function logClientMessage(type = "INFO", message) {
-    const upperType = type.toUpperCase();
+  const upperType = type.toUpperCase();
 
-      // Prefixes and Colors by Log Type
-    const prefixMap = {
-        INFO   : "[INFO]   ",
-        DEBUG  : "[DEBUG]  ",
-        ERROR  : "[ERROR]  ",
-        SUCCESS: "[SUCCESS]",
-        WARNING: "[WARNING]",
-    };
+  // Prefixes and Colors by Log Type
+  const prefixMap = {
+    INFO: "[INFO]   ",
+    DEBUG: "[DEBUG]  ",
+    ERROR: "[ERROR]  ",
+    SUCCESS: "[SUCCESS]",
+    WARNING: "[WARNING]",
+  };
 
-    const prefix = prefixMap[upperType] || "[LOG]";
+  const prefix = prefixMap[upperType] || "[LOG]";
 
-      // Final formatted message
-    console.log(`${prefix} ${message}`);
+  // Final formatted message
+  console.log(`${prefix} ${message}`);
 
-      // Trigger alert on ERROR in browser
-    if (typeof window !== 'undefined' && typeof alert === 'function') {
-        if (upperType === "ERROR") {
-            alert(`ERROR: ${message}`);
-        }
-        else if (upperType === "WARNING") {
-            alert(`WARNING: ${message}`);
-        }
+  // Trigger alert on ERROR in browser
+  if (typeof window !== 'undefined' && typeof alert === 'function') {
+    if (upperType === "ERROR") {
+      alert(`ERROR: ${message}`);
     }
+    else if (upperType === "WARNING") {
+      alert(`WARNING: ${message}`);
+    }
+  }
 };
