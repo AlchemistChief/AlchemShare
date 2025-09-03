@@ -6,7 +6,7 @@
 type Color = 'red' | 'green' | 'blue' | 'orange' | 'gold' | 'white';
 type Weight = 'normal' | 'bold';
 
-interface ColorOptions {
+type ColorOptions = {
     color?: Color;
     weight?: Weight;
 };
