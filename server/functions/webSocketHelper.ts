@@ -2,12 +2,15 @@
 import type { WebSocket } from 'ws';
 
 // ────────── Custom Modules ──────────
-// ────────── WebSocket Helper Module ──────────
+import { ClientSession } from './webSocketHandler.ts'
+import { sendFileList } from './webSocketHelperFunctions';
+
+// ────────── WebSocket Helper Module ────────── (Contains project based logic)
 
 export async function handleClientMessage(
     ws: WebSocket,
     message: any,
-    clientInfo: { username?: string; authToken?: string; clientIp?: string },
+    clientInfo: ClientSession,
     onError: (msg: string) => void
 ) {
     if (!ws) return; // ws must exist
@@ -16,26 +19,16 @@ export async function handleClientMessage(
         !clientInfo ||
         typeof clientInfo.username !== 'string' || !clientInfo.username ||
         typeof clientInfo.authToken !== 'string' || !clientInfo.authToken ||
-        typeof clientInfo.clientIp !== 'string' || !clientInfo.clientIp
+        typeof clientInfo.clientIP !== 'string' || !clientInfo.clientIP
     ) {
         onError('Invalid client info');
         return;
     }
 
     switch (message.type) {
-        case 'auth':
-            //TODO: Implement authentication
-            ws.send(JSON.stringify({ type: 'auth', success: true }));
-            break;
-
         case 'listFiles':
             // TODO: Implement directory reading and send file list
-            ws.send(
-                JSON.stringify({
-                    type: 'listFiles',
-                    files: [], // placeholder empty list
-                })
-            );
+            sendFileList(ws, clientInfo.username, clientInfo.userID);
             break;
 
         default:

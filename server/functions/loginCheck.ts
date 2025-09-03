@@ -1,16 +1,20 @@
 // ────────── Module Importing ──────────
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 
 // ────────── Custom Modules ──────────
 import { generateUniqueToken } from './utils.ts';
+import { initializeNewLogin } from './webSocketHandler.ts';
 
 // ────────── Login Check Module ──────────
 
+// Extend UserCredentials with userID and permissions
 interface UserCredentials {
     username: string;
     password: string;
+    userID: number;
+    permissions: string[];
 }
 
 interface CredentialsFile {
@@ -51,8 +55,14 @@ export function loginCheck(req: Request, res: Response) {
     // Generate auth token on success
     const authToken = generateUniqueToken();
 
-    // TODO: Optionally, store authToken with user session or DB here
+    //Initialize first login session, for WebSOcket connection
+    initializeNewLogin(authToken, username, user.userID, req.ip);
 
-    // Send success + token to client
-    res.status(200).json({ success: true, authToken });
+    // Send success + token + extra user data to client
+    res.status(200).json({
+        success: true,
+        authToken: authToken,
+        userID: user.userID,
+        permissions: user.permissions
+    });
 }
