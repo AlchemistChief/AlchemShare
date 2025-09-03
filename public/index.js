@@ -6,7 +6,6 @@ import { initLogin } from "./functions/loginHandler.js";
 // ────────── Index Main ──────────
 document.addEventListener("DOMContentLoaded", () => {
     initLogin(onLoginSuccess);
-    //onLoginSuccess()
 });
 
 async function onLoginSuccess() {
@@ -26,9 +25,7 @@ async function onLoginSuccess() {
     await loadCss("./css/contextMenu.css");
 
     // Dynamically load JS modules
-    const { webSocketInitialize } = await import("./functions/webSocketHandler.js");
     const { initContextMenu } = await import("./functions/contextMenu.js");
-    webSocketInitialize();
     initContextMenu();
 }
 
