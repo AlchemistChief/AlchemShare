@@ -4,12 +4,6 @@
 
 // ────────── Colsole Coloring ──────────
 type Color = 'red' | 'green' | 'blue' | 'orange' | 'gold' | 'white';
-type Weight = 'normal' | 'bold';
-
-type ColorOptions = {
-    color?: Color;
-    weight?: Weight;
-};
 
 const colorCodes: Record<Color, number> = {
     red: 196,
@@ -19,20 +13,15 @@ const colorCodes: Record<Color, number> = {
     gold: 220,
     white: 37,
 };
-const weightCodes: Record<Weight, number> = {
-    normal: 22, // Normal intensity
-    bold: 1,    // Bold
-};
 
 export function colorizeANSI(
     text: string,
-    options: ColorOptions = {}
+    color?: Color,
 ): string {
 
-    const colorCode = colorCodes[options.color ?? 'white'] ?? colorCodes.white;
-    const weightCode = weightCodes[options.weight ?? 'normal'] ?? weightCodes.normal;
+    const colorCode = colorCodes[color ?? 'white'] ?? colorCodes.white;
 
-    return `\x1b[${weightCode};38;5;${colorCode}m${text}\x1b[0m`;
+    return `\x1b[1;38;5;${colorCode}m${text}\x1b[0m`;
 };
 
 export function generateUniqueToken(): string {
