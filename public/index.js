@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function onLoginSuccess() {
     // Hide login screen
     const loginContainer = document.querySelector(".login-container");
-    //if (loginContainer) remove loginContainer
     if (loginContainer) loginContainer.remove();
 
     // Show app container
