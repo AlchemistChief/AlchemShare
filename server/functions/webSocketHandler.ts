@@ -147,6 +147,7 @@ function setupMessageListener(ws: WebSocket) {
                 ws.close();
                 return;
             }
+            //TODO: move Helper validation here
 
             // Delegate actual message handling to project-specific handler
             handleClientMessage(ws, message, clientInfo, (errMsg) => {

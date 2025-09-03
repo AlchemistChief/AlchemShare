@@ -17,8 +17,8 @@ export async function handleClientMessage(
     if (!message || typeof message !== 'object') return;
     if (
         !clientInfo ||
-        typeof clientInfo.username !== 'string' || !clientInfo.username ||
         typeof clientInfo.authToken !== 'string' || !clientInfo.authToken ||
+        typeof clientInfo.username !== 'string' || !clientInfo.username ||
         typeof clientInfo.clientIP !== 'string' || !clientInfo.clientIP
     ) {
         onError('Invalid client info');
