@@ -20,10 +20,11 @@ export function webSocketInitialize() {
 
     ws.onopen = () => {
         logClientMessage("SUCCESS", "[WS] WebSocket connected");
-        const { username } = getCredentials();
+        const { username, userID } = getCredentials();
         sendMessage({
             type: "auth",
-            username,
+            username: username,
+            userID: userID
         });
     };
 
@@ -50,8 +51,8 @@ export function sendMessage(message) {
     const { authToken } = getCredentials();
 
     const payload = {
-        authToken,
-        message,
+        authToken: authToken,
+        message: message,
     };
 
     ws.send(JSON.stringify(payload));

@@ -2,6 +2,7 @@
 
 // ────────── Custom Modules ──────────
 import { logClientMessage, saveCredentials } from "./utils.js";
+import { webSocketInitialize } from "./webSocketHandler.js";
 
 // ────────── Login Module ──────────
 export function initLogin(onSuccessCallback) {
@@ -28,15 +29,30 @@ export function initLogin(onSuccessCallback) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                }),
             });
 
             const data = await response.json();
 
-            if (response.ok && data.success && data.authToken) {
-                // Save username, password, and token from backend
-                saveCredentials({ username, password, authToken: data.authToken });
+            if (response.ok && data.success && data.authToken && data.userID && data.permissions) {
+                // Save username, password, token, userID, and permissions from backend
+                saveCredentials({
+                    authToken: data.authToken,
+                    username: username,
+                    password: password,
+                    userID: data.userID,
+                    permissions: data.permissions
+                });
+
                 onSuccessCallback();
+
+                // Optionally log for debugging
+                logClientMessage(`Logged in as ${username} (ID: ${data.userID}) with permissions: ${data.permissions.join(", ")}`);
+
+                webSocketInitialize();
             } else {
                 alert(data.error || "Login failed");
             }
