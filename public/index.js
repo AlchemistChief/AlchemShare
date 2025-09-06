@@ -29,6 +29,9 @@ async function onLoginSuccess() {
 
     const { initContextMenu } = await import("./functions/contextMenu.js");
     initContextMenu();
+
+    const { initFileLoad } = await import("./functions/fileLoad.js");
+    initFileLoad();
 }
 
 function loadCss(href) {
