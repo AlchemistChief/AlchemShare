@@ -17,9 +17,7 @@ export function apiHandler(req: Request<{ endpoint: string }>, res: Response, ne
         if (endpoint !== 'login') {
             authToken = req.headers['authorization'] || '';
             if (!authToken) {
-                const err = new Error('Missing or invalid authorization token');
-                err.status = 401;
-                throw err;
+                throw Object.assign(new Error('Missing or invalid authorization token'), { status: 401 });
             }
         }
 
