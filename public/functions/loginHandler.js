@@ -51,7 +51,6 @@ export function initLogin(onSuccessCallback) {
             }
         } catch (err) {
             console.error("Login request failed", err);
-            alert("Login request failed, please try again.");
         }
     });
 }
