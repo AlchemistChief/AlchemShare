@@ -57,6 +57,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
         case 404:
             filePath = path.join(import.meta.dirname, '../public/errors/404.html');
             break;
+        case 405:
+            filePath = path.join(import.meta.dirname, '../public/errors/405.html');
+            break;
         case 408:
             filePath = path.join(import.meta.dirname, '../public/errors/408.html');
             break;
