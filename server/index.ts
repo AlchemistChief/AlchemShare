@@ -7,8 +7,7 @@ import path from 'path';
 import fs from 'fs';
 
 // ────────── Custom Modules ──────────
-import { initializeWebSocketServer } from './functions/webSocketHandler.ts';
-import { loginCheck } from './functions/loginCheck.ts';
+import { apiHandler } from './functions/apiHandler.ts';
 
 // ────────── Application Setup ──────────
 const app = express();
@@ -30,7 +29,7 @@ app.use(express.json());
 app.use(express.static(path.join(import.meta.dirname, '../public')));
 
 // ────────── Routes ──────────
-app.post('/api/login', loginCheck);
+app.all('/api/:endpoint', apiHandler);
 
 // ────────── Error-handling middleware ──────────
 
@@ -45,6 +44,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     let filePath = '';
 
     switch (status) {
+        case 400:
+            filePath = path.join(import.meta.dirname, '../public/errors/400.html');
+            break;
         case 401:
             filePath = path.join(import.meta.dirname, '../public/errors/401.html');
             break;
@@ -84,6 +86,3 @@ server.listen(settings.PORT, '0.0.0.0', () => {
     console.log(`HTTPS Server running on port ${settings.PORT}`);
     console.log(`Server: https://${settings.DOMAIN}:${settings.PORT}`);
 });
-
-// ────────── WebSocket Handler ──────────
-initializeWebSocketServer(server);
