@@ -21,7 +21,7 @@ export function getFileList(req: Request, res: Response, authToken: string) {
         const files = getAllFilesRelative(userDirectory);
         res.status(200).json({ files });
     } catch (err: any) {
-        res.status(500).json({ error: err.message, files: [] });
+        throw Object.assign(new Error(`${err.message}`), { status: 500 });
     }
 }
 
