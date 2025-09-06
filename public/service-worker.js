@@ -43,21 +43,38 @@ self.addEventListener("fetch", event => {
     }
 
     event.respondWith(
-        caches.match(event.request).then(cached => {
-            return (
-                cached ||
-                fetch(event.request).then(response => {
-                    // Only cache valid responses
-                    if (!response || response.status !== 200 || response.type === "opaque") {
-                        return response;
-                    }
+        caches.open(CACHE_NAME).then(async cache => {
+            const cachedResponse = await cache.match(event.request);
 
-                    return caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    });
-                })
-            );
+            try {
+                // Make a HEAD request to check ETag or Last-Modified
+                const headResponse = await fetch(event.request, { method: "HEAD" });
+                const networkETag = headResponse.headers.get("ETag");
+                const networkLastModified = headResponse.headers.get("Last-Modified");
+
+                let cachedETag, cachedLastModified;
+                if (cachedResponse) {
+                    cachedETag = cachedResponse.headers.get("ETag");
+                    cachedLastModified = cachedResponse.headers.get("Last-Modified");
+                }
+
+                // If file changed (ETag or Last-Modified differ), fetch new version
+                if (!cachedResponse || networkETag !== cachedETag || networkLastModified !== cachedLastModified) {
+                    const networkResponse = await fetch(event.request);
+
+                    // Only cache valid responses
+                    if (networkResponse && networkResponse.status === 200 && networkResponse.type !== "opaque") {
+                        cache.put(event.request, networkResponse.clone());
+                    }
+                    return networkResponse;
+                }
+
+                // File unchanged → return cached version
+                return cachedResponse;
+            } catch (err) {
+                // On error (offline etc.) fallback to cache
+                return cachedResponse;
+            }
         })
     );
 });
