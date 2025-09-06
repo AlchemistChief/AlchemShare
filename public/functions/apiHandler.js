@@ -36,8 +36,11 @@ export async function sendAPIRequest({ method = "GET", endpoint = "ping", messag
 
         if (!res.ok) {
             const data = await res.json();
-            if (data.error && data.page) {
-                window.open(data.page, '_self');
+            if (data.page) {
+                const url = data.error
+                    ? `${data.page}?errorMessage=${encodeURIComponent(data.error)}`
+                    : data.page;
+                window.location.href = url;
                 return;
             }
         }
