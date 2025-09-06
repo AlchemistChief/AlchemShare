@@ -49,7 +49,7 @@ export function initContextMenu() {
                 const touch = e.touches[0];
                 showContextMenu(touch.pageX, touch.pageY, row);
             }, 500);
-        });
+        }, { passive: true });
 
         row.addEventListener("touchend", () => {
             if (holdTimer) clearTimeout(holdTimer);
@@ -58,5 +58,5 @@ export function initContextMenu() {
         row.addEventListener("touchmove", () => {
             if (holdTimer) clearTimeout(holdTimer);
         });
-    });
+    }, { passive: true });
 }
