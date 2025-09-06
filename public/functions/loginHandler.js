@@ -2,7 +2,7 @@
 
 // ────────── Custom Modules ──────────
 import { logClientMessage, saveCredentials } from "./utils.js";
-import { webSocketInitialize } from "./webSocketHandler.js";
+import { sendAPIRequest } from "./apiHandler.js";
 
 // ────────── Login Module ──────────
 export function initLogin(onSuccessCallback) {
@@ -24,16 +24,10 @@ export function initLogin(onSuccessCallback) {
         }
 
         try {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+            const response = await sendAPIRequest({method: "POST", endpoint: "/login", message: {
                     username: username,
                     password: password
-                }),
-            });
+                }});
 
             const data = await response.json();
 
@@ -50,9 +44,8 @@ export function initLogin(onSuccessCallback) {
                 onSuccessCallback();
 
                 // Optionally log for debugging
-                logClientMessage(`Logged in as ${username} (ID: ${data.userID}) with permissions: ${data.permissions.join(", ")}`);
+                logClientMessage('INFO', `Logged in as ${username} (ID: ${data.userID}) with permissions: ${data.permissions.join(", ")}`);
 
-                webSocketInitialize();
             } else {
                 alert(data.error || "Login failed");
             }
