@@ -31,12 +31,21 @@ export async function sendAPIRequest({ method = "GET", endpoint = "ping", messag
         fetchOptions.body = JSON.stringify({ message });
     }
 
-    return fetch(`/api${endpoint}`, fetchOptions)
-        .then(res => {
-            return res;
-        })
-        .catch(err => {
-            logClientMessage("ERROR", `[API] ${err}`);
-            throw err;
-        });
+    try {
+        const res = await fetch(`/api${endpoint}`, fetchOptions);
+
+        if (!res.ok) {
+            const data = await res.json();
+            if (data.error && data.page) {
+                window.open(data.page, '_self');
+                return;
+            }
+        }
+
+        // Return the raw Response to the caller
+        return res;
+
+    } catch (err) {
+        logClientMessage("ERROR", `[API] ${err}`);
+    }
 }
