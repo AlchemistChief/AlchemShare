@@ -26,6 +26,9 @@ async function onLoginSuccess() {
     // Dynamically load JS modules
     const { initializeWebSocket } = await import("./functions/webSocketHandler.js");
     initializeWebSocket();
+
+    const { initContextMenu } = await import("./functions/contextMenu.js");
+    initContextMenu();
 }
 
 function loadCss(href) {
