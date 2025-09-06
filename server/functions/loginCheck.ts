@@ -28,7 +28,7 @@ const CREDENTIALS_PATH = path.join(import.meta.dirname, '../assets/credentials.j
  * Express handler for login API
  */
 export function loginCheck(req: Request, res: Response) {
-    const { username, password } = req.body;
+    const { username, password } = req.body.message;
 
     if (!username || !password) {
         res.status(400).json({ error: 'Missing username or password' });
@@ -55,7 +55,6 @@ export function loginCheck(req: Request, res: Response) {
     // Generate auth token on success
     const authToken = generateUniqueToken();
 
-    //Initialize first login session, for WebSOcket connection
     initializeNewLogin(authToken, username, user.userID, req.ip);
 
     // Send success + token + extra user data to client
