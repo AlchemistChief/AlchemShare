@@ -8,6 +8,7 @@ import fs from 'fs';
 
 // ────────── Custom Modules ──────────
 import { apiHandler } from './functions/apiHandler.ts';
+import { initializeWebSocketServer } from './functions/webSocketHandler.ts';
 
 // ────────── Application Setup ──────────
 const app = express();
@@ -86,3 +87,6 @@ server.listen(settings.PORT, '0.0.0.0', () => {
     console.log(`HTTPS Server running on port ${settings.PORT}`);
     console.log(`Server: https://${settings.DOMAIN}:${settings.PORT}`);
 });
+
+// ────────── WebSocket Server Setup ──────────
+initializeWebSocketServer(server);
