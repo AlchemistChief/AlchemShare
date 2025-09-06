@@ -34,7 +34,7 @@ app.all('/api/:endpoint', apiHandler);
 
 // ────────── Error-handling middleware ──────────
 
-// 404 handler for unmatched routes
+//404 handler for unmatched routes
 app.use((req, res) => {
     res.status(404).sendFile(path.join(import.meta.dirname, '../public/404.html'));
 });
@@ -42,41 +42,27 @@ app.use((req, res) => {
 // General error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
-    let filePath = '';
 
-    switch (status) {
-        case 400:
-            filePath = path.join(import.meta.dirname, '../public/errors/400.html');
-            break;
-        case 401:
-            filePath = path.join(import.meta.dirname, '../public/errors/401.html');
-            break;
-        case 403:
-            filePath = path.join(import.meta.dirname, '../public/errors/403.html');
-            break;
-        case 404:
-            filePath = path.join(import.meta.dirname, '../public/errors/404.html');
-            break;
-        case 405:
-            filePath = path.join(import.meta.dirname, '../public/errors/405.html');
-            break;
-        case 408:
-            filePath = path.join(import.meta.dirname, '../public/errors/408.html');
-            break;
-        case 429:
-            filePath = path.join(import.meta.dirname, '../public/errors/429.html');
-            break;
-        case 500:
-        default:
-            filePath = path.join(import.meta.dirname, '../public/errors/500.html');
-            break;
-    }
+    // Map status codes to error pages
+    const errorPages: Record<number, string> = {
+        400: '/errors/400.html',
+        401: '/errors/401.html',
+        403: '/errors/403.html',
+        404: '/errors/404.html',
+        405: '/errors/405.html',
+        408: '/errors/408.html',
+        429: '/errors/429.html',
+        500: '/errors/500.html'
+    };
 
-    if (filePath && fs.existsSync(filePath)) {
-        res.status(status).sendFile(filePath);
-    } else {
-        res.status(status).type('text').send(`Error ${status}`);
-    }
+    const errorPage = errorPages[status] || errorPages[500];
+
+    // Send JSON response with status and page link
+    res.status(status).json({
+        error: true,
+        status,
+        page: errorPage
+    });
 });
 
 // ────────── Server Startup ──────────
