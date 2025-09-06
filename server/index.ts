@@ -59,7 +59,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
     // Send JSON response with status and page link
     res.status(status).json({
-        error: true,
+        error: err.message,
         status,
         page: errorPage
     });
