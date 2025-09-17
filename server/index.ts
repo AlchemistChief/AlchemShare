@@ -36,7 +36,7 @@ app.all('/api/:endpoint', apiHandler);
 
 //404 handler for unmatched routes
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(import.meta.dirname, '../public/404.html'));
+    res.status(404).sendFile(path.join(import.meta.dirname, '../public/error/404.html'));
 });
 
 // General error handler
