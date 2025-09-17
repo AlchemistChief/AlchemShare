@@ -36,7 +36,7 @@ app.all('/api/:endpoint', apiHandler);
 
 //404 handler for unmatched routes
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(import.meta.dirname, '../public/404.html'));
+    res.status(404).sendFile(path.join(import.meta.dirname, '../public/errir/404.html'));
 });
 
 // General error handler
@@ -60,7 +60,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     // Send JSON response with status and page link
     res.status(status).json({
         error: err.message,
-        status,
+        status: status,
         page: errorPage
     });
 });
