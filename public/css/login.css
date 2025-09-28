@@ -68,6 +68,7 @@
 
 .login-form #error-message {
     display: none;
+    white-space: pre-line;
     color: #ff0000;
     border: 1px solid red;
     font-weight: bold;
