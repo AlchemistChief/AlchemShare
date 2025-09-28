@@ -33,35 +33,19 @@ app.use(express.static(path.join(import.meta.dirname, '../public')));
 app.all('/api/:endpoint', apiHandler);
 
 // ────────── Error-handling middleware ──────────
-
 //404 handler for unmatched routes
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(import.meta.dirname, '../public/errors/404.html'));
+    res.status(404).sendFile(path.join(import.meta.dirname, '../public/404.html'));
 });
 
 // General error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
 
-    // Map status codes to error pages
-    const errorPages: Record<number, string> = {
-        400: '/errors/400.html',
-        401: '/errors/401.html',
-        403: '/errors/403.html',
-        404: '/errors/404.html',
-        405: '/errors/405.html',
-        408: '/errors/408.html',
-        429: '/errors/429.html',
-        500: '/errors/500.html'
-    };
-
-    const errorPage = errorPages[status] || errorPages[500];
-
-    // Send JSON response with status and page link
+    // Send JSON response with status
     res.status(status).json({
-        error: err.message,
+        errorMessage: err.message,
         status: status,
-        page: errorPage
     });
 });
 
