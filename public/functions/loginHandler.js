@@ -24,31 +24,36 @@ export function initLogin(onSuccessCallback) {
         }
 
         try {
-            const response = await sendAPIRequest({method: "POST", endpoint: "/login", message: {
-                    username: username,
-                    password: password
-                }});
+            const res = await sendAPIRequest({method: "POST", endpoint: "/login", message: {
+                username: username,
+                password: password
+            }});
 
-            const data = await response.json();
+            // Return if response error
+            if (!res.ok && res.status !== 401) return;
 
-            if (response.ok && data.success && data.authToken && data.userID && data.permissions) {
-                // Save username, password, token, userID, and permissions from backend
-                saveCredentials({
-                    authToken: data.authToken,
-                    username: username,
-                    password: password,
-                    userID: data.userID,
-                    permissions: data.permissions
-                });
+            const data = await res.json();
 
-                onSuccessCallback();
-
-                // Optionally log for debugging
-                logClientMessage('INFO', `Logged in as ${username} (ID: ${data.userID}) with permissions: ${data.permissions.join(", ")}`);
-
-            } else {
-                alert(data.error || "Login failed");
+            if (!data.success || !data.authToken || !data.userID || !data.permissions) {
+                const errorMessage = document.getElementById("error-message")
+                errorMessage.textContent = `Login failed:\n${res.statusText} - ${data.errorMessage}`;
+                errorMessage.style.display = "block";
+                return;
             }
+
+            saveCredentials({
+                authToken: data.authToken,
+                username: username,
+                password: password,
+                userID: data.userID,
+                permissions: data.permissions
+            });
+
+            onSuccessCallback();
+
+            // Optionally log for debugging
+            logClientMessage("INFO", `Logged in as ${username} (ID: ${data.userID}) with permissions: ${data.permissions.join(", ")}`);
+
         } catch (err) {
             console.error("Login request failed", err);
         }
