@@ -41,14 +41,14 @@ export function loginCheck(req: Request, res: Response) {
         credentials = JSON.parse(rawData);
     } catch (err) {
         console.error('Failed to read credentials.json:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        throw Object.assign(new Error(), { status: 500 });
         return;
     }
 
     const user = credentials.users.find((u) => u.username === username);
     if (!user || user.password !== password) {
         console.log(`Invalid login attempt for user: ${username}`);
-        res.status(401).json({ error: 'Invalid credentials' });
+        throw Object.assign(new Error('Invalid credentials'), { status: 401 });
         return;
     }
 
