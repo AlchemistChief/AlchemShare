@@ -39,11 +39,13 @@ export function initContextMenu() {
     const fileRows = document.querySelectorAll(".ftp-row");
 
     fileRows.forEach((row) => {
+        // Right-click context menu
         row.addEventListener("contextmenu", (e) => {
             e.preventDefault();
             showContextMenu(e.pageX, e.pageY, row);
         });
 
+        // Long-press for touch devices
         row.addEventListener("touchstart", (e) => {
             holdTimer = setTimeout(() => {
                 const touch = e.touches[0];
@@ -51,12 +53,14 @@ export function initContextMenu() {
             }, 500);
         }, { passive: true });
 
+        // Clear timer on touchend
         row.addEventListener("touchend", () => {
             if (holdTimer) clearTimeout(holdTimer);
-        });
+        }, { passive: true });
 
+        // Clear timer if the user moves finger
         row.addEventListener("touchmove", () => {
             if (holdTimer) clearTimeout(holdTimer);
-        });
-    }, { passive: true });
+        }, { passive: true });
+    });
 }
