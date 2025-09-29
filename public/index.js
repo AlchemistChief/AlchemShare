@@ -27,9 +27,6 @@ async function onLoginSuccess() {
     const { initializeWebSocket } = await import("./functions/webSocketHandler.js");
     initializeWebSocket();
 
-    const { initContextMenu } = await import("./functions/contextMenu.js");
-    initContextMenu();
-
     const { initFileLoad } = await import("./functions/fileLoad.js");
     initFileLoad();
 }
