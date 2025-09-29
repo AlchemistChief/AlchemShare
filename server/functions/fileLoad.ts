@@ -5,6 +5,7 @@ import fs from 'fs';
 
 // ────────── Custom Modules ──────────
 import { getAuthenticatedClientData } from './webSocketHandler.ts';
+import { formatFileSize, formatDate } from './utils.ts';
 
 // ────────── File Load Module ──────────
 // Sends a flat list of relative file paths for a user directory
@@ -26,8 +27,13 @@ export function getFileList(req: Request, res: Response, authToken: string) {
 }
 
 // ────────── Helper: Recursively get all relative file paths ──────────
-function getAllFilesRelative(dir: string, baseDir = dir): string[] {
-    let results: string[] = [];
+function getAllFilesRelative(dir: string, baseDir = dir): {
+    path: string;
+    size: string;
+    lastModified: string;
+    type: string;
+}[] {
+    let results: any[] = [];
     const items = fs.readdirSync(dir);
 
     for (const item of items) {
@@ -35,11 +41,15 @@ function getAllFilesRelative(dir: string, baseDir = dir): string[] {
         const stats = fs.statSync(fullPath);
 
         if (stats.isDirectory()) {
-            // Recurse into directories but don't add the folder itself
+            // Recurse into subdirectories
             results = results.concat(getAllFilesRelative(fullPath, baseDir));
         } else {
-            // Add relative file path
-            results.push(path.relative(baseDir, fullPath));
+            results.push({
+                path: path.relative(baseDir, fullPath),
+                size: formatFileSize(stats.size),
+                lastModified: formatDate(stats.mtime),
+                type: path.extname(item).slice(1).toLowerCase() || 'unknown'
+            });
         }
     }
 
