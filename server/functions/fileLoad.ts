@@ -8,50 +8,41 @@ import { getAuthenticatedClientData } from './webSocketHandler.ts';
 import { formatFileSize, formatDate } from './utils.ts';
 
 // ────────── File Load Module ──────────
-// Sends a flat list of relative file paths for a user directory
+// Sends a non-recursive list of files & folders inside the given path
 export function getFileList(req: Request, res: Response, authToken: string) {
     const userID = getAuthenticatedClientData(authToken).userID;
+    const relativePath = req.body.message.path || "/";
 
     const userDirectory = path.join(import.meta.dirname, '../../files', `ID_${userID}`);
+    const targetDir = path.normalize(path.join(userDirectory, relativePath));
 
     try {
-        // Ensure the directory exists, create one if not
-        fs.mkdirSync(userDirectory, { recursive: true });
+        // Prevent directory traversal
+        if (!targetDir.startsWith(userDirectory)) {
+            res.status(403).json({ error: "Access denied" });
+            return;
+        }
 
-        // Respond with the list of relative file paths
-        const files = getAllFilesRelative(userDirectory);
-        res.status(200).json({ files });
+        // Ensure the directory exists
+        fs.mkdirSync(targetDir, { recursive: true });
+
+        // Get contents of that directory (non-recursive)
+        const items = fs.readdirSync(targetDir);
+        const files = items.map(item => {
+            const fullPath = path.join(targetDir, item);
+            const stats = fs.statSync(fullPath);
+
+            return {
+                name: item,
+                isDirectory: stats.isDirectory(),
+                size: stats.isDirectory() ? null : formatFileSize(stats.size),
+                lastModified: formatDate(stats.mtime),
+                type: stats.isDirectory() ? "folder" : (path.extname(item).slice(1).toLowerCase() || "unknown")
+            };
+        });
+
+        res.status(200).json({ path: relativePath, files });
     } catch (err: any) {
         throw Object.assign(new Error(`${err.message}`), { status: 500 });
     }
-}
-
-// ────────── Helper: Recursively get all relative file paths ──────────
-function getAllFilesRelative(dir: string, baseDir = dir): {
-    path: string;
-    size: string;
-    lastModified: string;
-    type: string;
-}[] {
-    let results: any[] = [];
-    const items = fs.readdirSync(dir);
-
-    for (const item of items) {
-        const fullPath = path.join(dir, item);
-        const stats = fs.statSync(fullPath);
-
-        if (stats.isDirectory()) {
-            // Recurse into subdirectories
-            results = results.concat(getAllFilesRelative(fullPath, baseDir));
-        } else {
-            results.push({
-                path: path.relative(baseDir, fullPath),
-                size: formatFileSize(stats.size),
-                lastModified: formatDate(stats.mtime),
-                type: path.extname(item).slice(1).toLowerCase() || 'unknown'
-            });
-        }
-    }
-
-    return results;
 }
