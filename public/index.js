@@ -5,7 +5,23 @@ import { initLogin } from "./functions/loginHandler.js";
 
 // ────────── Index Main ──────────
 document.addEventListener("DOMContentLoaded", () => {
-    initLogin(onLoginSuccess);
+    //initLogin(onLoginSuccess);
+    const host = window.location.hostname;
+    const protocol = window.location.protocol;
+
+    // Detect if running in VSCode Live Preview
+    const isVSCodeLivePreview =
+        host.includes("127.0.0.1") ||
+        host.includes("localhost") ||
+        protocol === "vscode-webview:";
+
+    if (isVSCodeLivePreview) {
+        console.log("Running inside VSCode Live Preview");
+        onLoginSuccess();
+    } else {
+        console.log("Running in normal browser");
+        initLogin(onLoginSuccess);
+    }
 });
 
 async function onLoginSuccess() {
