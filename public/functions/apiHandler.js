@@ -18,6 +18,7 @@ const errorMessages = {
     500: "Something went wrong on our end.",
     429: "You have sent too many requests in a short period of time.",
     418: "The server refuses the attempt to brew coffee with a teapot.",
+    415: "The server refused to accept the request",
     408: "The request took longer than the server was prepared to wait.",
     405: "The request method is recognized by the server but not supported by this resource.",
     404: "Ops! The page you are looking for doesn't exist.",
