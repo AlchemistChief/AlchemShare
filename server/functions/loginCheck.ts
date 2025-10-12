@@ -8,7 +8,6 @@ import { generateUniqueToken } from './utils.ts';
 import { initializeNewLogin } from './webSocketHandler.ts';
 
 // ────────── Login Check Module ──────────
-
 // Extend UserCredentials with userID and permissions
 interface UserCredentials {
     username: string;
@@ -21,35 +20,26 @@ interface CredentialsFile {
     users: UserCredentials[];
 }
 
-// Use import.meta.dirname for resolving credentials path
-const CREDENTIALS_PATH = path.join(import.meta.dirname, '../assets/credentials.json');
-
-/**
- * Express handler for login API
- */
 export function loginCheck(req: Request, res: Response) {
     const { username, password } = req.body.message;
 
     if (!username || !password) {
-        res.status(400).json({ error: 'Missing username or password' });
-        return;
+        throw new HttpError(400, 'Missing username or password');
     }
 
     let credentials: CredentialsFile;
     try {
-        const rawData = fs.readFileSync(CREDENTIALS_PATH, 'utf-8');
+        const rawData = fs.readFileSync(path.join(import.meta.dirname, '../assets/credentials.json'), 'utf-8');
         credentials = JSON.parse(rawData);
     } catch (err) {
         console.error('Failed to read credentials.json:', err);
-        throw Object.assign(new Error(), { status: 500 });
-        return;
+        throw new HttpError(500, `${err}`);
     }
 
     const user = credentials.users.find((u) => u.username === username);
     if (!user || user.password !== password) {
         console.log(`Invalid login attempt for user: ${username}`);
-        throw Object.assign(new Error('Invalid credentials'), { status: 401 });
-        return;
+        throw new HttpError(401, 'Invalid credentials');
     }
 
     // Generate auth token on success

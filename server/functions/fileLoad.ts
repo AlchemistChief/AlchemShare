@@ -19,8 +19,7 @@ export function getFileList(req: Request, res: Response, authToken: string) {
     try {
         // Prevent directory traversal
         if (!targetDir.startsWith(userDirectory)) {
-            res.status(403).json({ error: "Access denied" });
-            return;
+            throw new HttpError(403, 'Access denied');
         }
 
         // Ensure the directory exists
@@ -43,6 +42,6 @@ export function getFileList(req: Request, res: Response, authToken: string) {
 
         res.status(200).json({ path: relativePath, files });
     } catch (err: any) {
-        throw Object.assign(new Error(`${err.message}`), { status: 500 });
+        throw new HttpError(500, `${err.message}`);
     }
 }
