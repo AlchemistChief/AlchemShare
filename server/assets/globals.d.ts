@@ -1,7 +1,6 @@
-export {}
+// global.d.ts
+export {};
 
-declare global{
-    interface Error {
-        status?: number
-    }
+declare global {
+    var HttpError: typeof import('./errorClass.ts').HttpError;
 }

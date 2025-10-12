@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 
 // ────────── Custom Modules ──────────
+import './assets/errorClass'; // Extend error Class
 import { apiHandler } from './functions/apiHandler.ts';
 import { initializeWebSocketServer } from './functions/webSocketHandler.ts';
 
