@@ -43,6 +43,11 @@ app.use((req, res) => {
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
 
+    // Log stack trace to console for server errors
+    if (status === 500 && err.stack) {
+        console.error('Server Error Stack Trace:', err.stack);
+    }
+
     // Send JSON response with status
     res.status(status).json({
         errorMessage: err.message,
