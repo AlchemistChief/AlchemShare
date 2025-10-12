@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function onLoginSuccess() {
+    // Change page title
+    document.title = "AlchemShare - Home";
+    
     // Hide login screen
     const loginContainer = document.querySelector(".login-container");
     if (loginContainer) loginContainer.remove();
