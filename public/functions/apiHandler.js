@@ -17,6 +17,7 @@ const errorMessages = {
     502: "The server was acting as a gateway or proxy and received an invalid response from the upstream server.",
     500: "Something went wrong on our end.",
     429: "You have sent too many requests in a short period of time.",
+    422: "The server cannot process the provided data.",
     418: "The server refuses the attempt to brew coffee with a teapot.",
     415: "The server refused to accept the request",
     408: "The request took longer than the server was prepared to wait.",
