@@ -8,21 +8,21 @@ import { getAuthenticatedClientData } from './webSocketHandler.ts';
 import { formatFileSize, formatDate } from './utils.ts';
 
 // ────────── File Load Module ──────────
-// Sends a non-recursive list of files & folders inside the given path
 export function getFileList(req: Request, res: Response, authToken: string) {
-    const userID = getAuthenticatedClientData(authToken).userID;
-    const relativePath = req.body.message.path || "/";
-
-    const userDirectory = path.join(import.meta.dirname, '../../files', `ID_${userID}`);
-    const targetDir = path.normalize(path.join(userDirectory, relativePath));
-
     try {
-        // Prevent directory traversal
+        const userID = getAuthenticatedClientData(authToken).userID;
+        const relativePath = req.body.message.path || "/";
+
+        // ────── Construct User Directory Path ──────
+        const userDirectory = path.join(import.meta.dirname, '../../files', `ID_${userID}`);
+        const targetDir = path.normalize(path.join(userDirectory, relativePath));
+
+        // ────── Prevent Directory Traversal ──────
         if (!targetDir.startsWith(userDirectory)) {
             throw new HttpError(403, 'Access denied');
         }
 
-        // Ensure the directory exists
+        // ────── Verify Directory Exists ──────
         fs.mkdirSync(targetDir, { recursive: true });
 
         // Get contents of that directory (non-recursive)
