@@ -9,7 +9,7 @@ let savedCredentials = {
   permissions: [],
 };
 
-export function saveCredentials({authToken, username, password, userID, permissions }) {
+export function saveCredentials({ authToken, username, password, userID, permissions }) {
   savedCredentials.authToken = authToken;
   savedCredentials.username = username;
   savedCredentials.password = password;
@@ -26,27 +26,34 @@ export function getCredentials() {
 export function logClientMessage(type = "INFO", message) {
   const upperType = type.toUpperCase();
 
-  // Prefixes and Colors by Log Type
-  const prefixMap = {
-    INFO: "[INFO]   ",
-    DEBUG: "[DEBUG]  ",
-    ERROR: "[ERROR]  ",
-    SUCCESS: "[SUCCESS]",
-    WARNING: "[WARNING]",
+  const styleMap = {
+    INFO: 'color: dodgerblue; font-weight: bold',
+    DEBUG: 'color: yellow; font-weight: bold',
+    ERROR: 'color: red; font-weight: bold',
+    SUCCESS: 'color: green; font-weight: bold',
+    WARNING: 'color: orange; font-weight: bold',
   };
 
-  const prefix = prefixMap[upperType] || "[LOG]";
+  const prefixMap = {
+    INFO: '[INFO]   ',
+    DEBUG: '[DEBUG]  ',
+    ERROR: '[ERROR]  ',
+    SUCCESS: '[SUCCESS]',
+    WARNING: '[WARNING]',
+  };
 
-  // Final formatted message
-  console.log(`${prefix} ${message}`);
+  const prefix = prefixMap[upperType] || '[LOG]';
+  const style = styleMap[upperType] || 'color: black';
+
+  // Apply style only to the prefix
+  console.log(`%c${prefix}%c ${message}`, style, '');
 
   // Trigger alert on ERROR in browser
   if (typeof window !== 'undefined' && typeof alert === 'function') {
-    if (upperType === "ERROR") {
+    if (upperType === 'ERROR') {
       alert(`ERROR: ${message}`);
-    }
-    else if (upperType === "WARNING") {
+    } else if (upperType === 'WARNING') {
       alert(`WARNING: ${message}`);
     }
   }
-};
+}
