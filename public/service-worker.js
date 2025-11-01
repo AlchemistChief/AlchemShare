@@ -1,6 +1,5 @@
 const CACHE_NAME = 'static-cache-v1';
 const STATIC_ASSETS = [
-    '/test.txt',
     '/404.html',
     '/error.html',
     '/index.html',
