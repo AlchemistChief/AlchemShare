@@ -46,12 +46,17 @@ self.addEventListener('install', event => {
     );
 });
 
-// ────────── Fetch Event ──────────
 self.addEventListener('fetch', event => {
     const request = event.request;
+
+    // Skip non-GET or non-HTTP(S) requests
+    if (request.method !== 'GET' || !request.url.startsWith('http')) return;
+
     event.respondWith(
         caches.open(CACHE_NAME).then(async cache => {
             const cached = await cache.match(request);
+
+            // If no cache exists, fetch and store it
             if (!cached) {
                 console.log(`[SW] No cache, fetching: ${request.url}`);
                 const netRes = await fetch(request);
@@ -59,31 +64,35 @@ self.addEventListener('fetch', event => {
                 return netRes;
             }
 
-            // Prepare conditional headers
-            const headers = new Headers();
+            // Build a new request with preserved metadata + conditional headers
             const etag = cached.headers.get('ETag');
             const lastMod = cached.headers.get('Last-Modified');
-            if (etag) headers.set('If-None-Match', etag);
-            if (lastMod) headers.set('If-Modified-Since', lastMod);
+            const conditionalRequest = new Request(request, {
+                headers: {
+                    ...(etag && { 'If-None-Match': etag }),
+                    ...(lastMod && { 'If-Modified-Since': lastMod }),
+                },
+                cache: 'no-store',
+            });
 
             try {
-                const netRes = await fetch(request, { headers });
-                if (netRes.status === 304) {
-                    console.log(`[SW] Cache valid: ${request.url}`);
-                    return cached;
-                }
-                if (netRes.ok) {
-                    console.log(`[SW] Updated cache: ${request.url}`);
+                const netRes = await fetch(conditionalRequest);
+
+                // Use cached copy if not modified
+                if (netRes.status === 304) return cached;
+
+                // Only update cache and log if ETag changed
+                const newEtag = netRes.headers.get('ETag');
+                if (!newEtag || newEtag !== etag) {
+                    console.log(`[SW] Updated cache (new version): ${request.url}`);
                     cache.put(request, netRes.clone());
-                    return netRes;
                 }
-            } catch (err) {
+
+                return netRes.ok ? netRes : cached;
+            } catch {
                 console.warn(`[SW] Network failed, using cache: ${request.url}`);
-                console.error(err);
                 return cached;
             }
-
-            return cached;
         })
     );
 });
