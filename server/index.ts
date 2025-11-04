@@ -28,7 +28,15 @@ const server = https.createServer({
 
 // ────────── Middleware Configuration ──────────
 app.use(express.json());
-app.use(express.static(path.join(import.meta.dirname, '../public')));
+app.use(express.static(path.join(import.meta.dirname, '../public'), {
+    etag: true,
+    lastModified: true,
+    cacheControl: true,
+    setHeaders: (res, filePath) => { // Allows 304 responses
+        res.setHeader('Cache-Control', 'public, must-revalidate, max-age=0');
+    }
+}));
+
 
 // ────────── Routes ──────────
 app.all('/api/:endpoint', apiHandler);
