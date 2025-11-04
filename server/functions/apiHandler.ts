@@ -6,6 +6,10 @@ import { loginCheck } from './loginCheck.ts';
 import { getFileList } from './fileLoad.ts';
 
 // ────────── API Modules ──────────
+const allowedMethods: Record<string, string[]> = {
+    login: ['POST'],
+    listfiles: ['POST'],
+};
 
 export function apiHandler(req: Request<{ endpoint: string }>, res: Response, next: NextFunction): void {
     const endpoint = req.params.endpoint;
@@ -15,35 +19,21 @@ export function apiHandler(req: Request<{ endpoint: string }>, res: Response, ne
     try {
 
         // ────────── Validate HTTP Method ──────────
-        const allowedMethods: Record<string, string[]> = {
-            login: ['POST'],
-            listfiles: ['POST']
-        };
-
         // Check if endpoint exists first
         if (!allowedMethods[endpoint]) {
-            throw Object.assign(
-                new Error(`API endpoint '${endpoint}' not found.`),
-                { status: 404 }
-            );
+            throw new HttpError(404, `API endpoint '${endpoint}' not found.`);
         }
 
         // Check if method is allowed
         if (!allowedMethods[endpoint]?.includes(method)) {
-            throw Object.assign(
-                new Error(`Method ${method} not allowed for endpoint '${endpoint}'.`),
-                { status: 405 }
-            );
+            throw new HttpError(405, `Method ${method} not allowed for endpoint '${endpoint}'.`);
         }
 
         // Check if authorized, except on login
         if (endpoint !== 'login') {
             authToken = req.headers['authorization'] || '';
             if (!authToken) {
-                throw Object.assign(
-                    new Error('Missing or invalid authorization token'),
-                    { status: 401 }
-                );
+                throw new HttpError(401, 'Missing or invalid authorization token');
             }
         }
 
@@ -56,11 +46,7 @@ export function apiHandler(req: Request<{ endpoint: string }>, res: Response, ne
                 getFileList(req, res, authToken);
                 break;
             default:
-                throw Object.assign(
-                    new Error(`API endpoint '${endpoint}' not found.`),
-                    { status: 404 }
-                );
-                return;
+                throw new HttpError(404, `API endpoint '${endpoint}' not found.`);
         }
     } catch (err) {
         next(err);
