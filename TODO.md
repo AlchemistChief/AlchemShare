@@ -21,7 +21,7 @@
   - [ ] folderUpload.js
   - [ ] folderDownload.js
   - [ ] folderPreview.js
-- [ ] File type icons
+- [x] File type icons
 - [ ] Drag & Drop Upload
 
 ---
@@ -29,7 +29,7 @@
 ## 🔧 BACKEND
 - [x] WebSocket Server
 - [x] Login Handler
-- [ ] Account Based File Saving
+- [x] Account Based File Saving
 - [ ] Unique ID generation for Accounts
 
 ---
