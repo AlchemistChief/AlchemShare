@@ -1,7 +1,10 @@
 // functions/utils.js
 
 // ────────── Credentials Module (Frontend) ──────────
-let savedCredentials = {
+const STORAGE_KEY = "savedCredentials";
+
+// Initialize copy from sessionStorage if available
+let savedCredentials = JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || {
   authToken: null,
   username: null,
   password: null,
@@ -10,17 +13,35 @@ let savedCredentials = {
 };
 
 export function saveCredentials({ authToken, username, password, userID, permissions }) {
-  savedCredentials.authToken = authToken;
-  savedCredentials.username = username;
-  savedCredentials.password = password;
-  savedCredentials.userID = userID;
-  savedCredentials.permissions = permissions || [];
-}
+  savedCredentials = {
+    authToken: authToken,
+    username: username,
+    password: password,
+    userID: userID,
+    permissions: permissions || [],
+  };
 
+  // Persist to sessionStorage
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(savedCredentials));
+}
 
 export function getCredentials() {
+  // Always return latest from sessionStorage in case of page reload
+  savedCredentials = JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || savedCredentials;
   return { ...savedCredentials };
 }
+
+export function clearCredentials() {
+  savedCredentials = {
+    authToken: null,
+    username: null,
+    password: null,
+    userID: null,
+    permissions: [],
+  };
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
 
 // ────────── Logger Function ──────────
 export function logClientMessage(type = "INFO", message) {
