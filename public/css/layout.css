@@ -22,7 +22,7 @@ html {
     justify-content: space-between;
     align-items: center;
     background-color: #111;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1.5rem;
     border-bottom: 1px solid #222;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
 }
